@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2520,
+    "production_files": 29,
+    "production_packages": 9,
+    "test_files": 9,
+    "production_functions": 234,
+    "decision_points": 351
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "Record",
+      "Batch",
+      "Audit",
+      "Profile"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "accept player and create run",
+        "validate initial arena state",
+        "persist run and profile",
+        "confirm active run status"
+      ],
+      "test": "TestWorkflowAccept"
+    },
+    {
+      "steps": [
+        "queue selected runs",
+        "process one simulation step",
+        "review records and summaries",
+        "publish completed batch"
+      ],
+      "test": "TestWorkflowPublish"
+    },
+    {
+      "steps": [
+        "open embedded store",
+        "update persisted run",
+        "close store cleanly",
+        "reopen and verify state"
+      ],
+      "test": "TestWorkflowReopen"
+    }
+  ]
+}
